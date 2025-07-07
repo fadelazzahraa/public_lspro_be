@@ -1,0 +1,1195 @@
+{
+	"info": {
+		"_postman_id": "YOUR_COLLECTION_ID",
+		"name": "Full API Test Collection",
+		"description": "A collection to test all API endpoints based on provided JS files.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Token is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.token).to.not.be.empty;",
+									"    pm.environment.set(\"authToken\", jsonData.token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"testuser@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login a user and retrieve a JWT token."
+					},
+					"response": []
+				}
+			],
+			"description": "Handles user authentication."
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"newuser@example.com\",\n    \"password\": \"securePassword123\",\n    \"role\": \"user\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "Create a new user."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "Get a list of all users."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						},
+						"description": "Get a specific user by their ID. Replace '1' with an actual user ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"updateduser@example.com\",\n    \"role\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						},
+						"description": "Update a user's details. Replace '1' with an actual user ID. Uses POST as per user_routes.js."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						},
+						"description": "Delete a user by their ID. Replace '1' with an actual user ID."
+					},
+					"response": []
+				}
+			],
+			"description": "Operations related to Users."
+		},
+		{
+			"name": "TOE (Target of Evaluation)",
+			"item": [
+				{
+					"name": "Create TOE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Sample TOE\",\n    \"version\": \"1.0.0\",\n    \"eal\": \"EAL4+\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/toe",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"toe"
+							]
+						},
+						"description": "Create a new Target of Evaluation."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All TOE",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/toe",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"toe"
+							]
+						},
+						"description": "Get a list of all TOEs."
+					},
+					"response": []
+				},
+				{
+					"name": "Get TOE By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/toe/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"toe",
+								"1"
+							]
+						},
+						"description": "Get a specific TOE by its ID. Replace '1' with an actual TOE ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Update TOE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Updated Sample TOE\",\n    \"version\": \"1.0.1\",\n    \"eal\": \"EAL5\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/toe/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"toe",
+								"1"
+							]
+						},
+						"description": "Update a TOE's details. Replace '1' with an actual TOE ID. Uses POST as per toe_routes.js."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete TOE",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/toe/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"toe",
+								"1"
+							]
+						},
+						"description": "Delete a TOE by its ID. Replace '1' with an actual TOE ID."
+					},
+					"response": []
+				}
+			],
+			"description": "Operations related to Target of Evaluations (TOE)."
+		},
+		{
+			"name": "EOR (Evidence of Review)",
+			"item": [
+				{
+					"name": "Create EOR",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"project_id\": \"PROJ001\",\n    \"workbook_id\": \"WB001\",\n    \"work_package\": \"WP001\",\n    \"deliverables_reference\": \"D_REF001\",\n    \"cc_components\": \"Component A, Component B\",\n    \"workbook_released_date\": \"2024-01-15T00:00:00.000Z\",\n    \"toe_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/eor",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor"
+							]
+						},
+						"description": "Create a new EOR. Ensure 'toe_id' exists."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All EOR",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor"
+							]
+						},
+						"description": "Get a list of all EORs."
+					},
+					"response": []
+				},
+				{
+					"name": "Get EOR By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor",
+								"1"
+							]
+						},
+						"description": "Get a specific EOR by its ID. Replace '1' with an actual EOR ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Update EOR",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"work_package\": \"WP002_Updated\",\n    \"deliverables_reference\": \"D_REF002_Updated\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/eor/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor",
+								"1"
+							]
+						},
+						"description": "Update an EOR's details. Replace '1' with an actual EOR ID. Uses POST as per eor_routes.js."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete EOR",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor",
+								"1"
+							]
+						},
+						"description": "Delete an EOR by its ID. Replace '1' with an actual EOR ID."
+					},
+					"response": []
+				}
+			],
+			"description": "Operations related to Evidence of Review (EOR)."
+		},
+		{
+			"name": "EOR Issue",
+			"item": [
+				{
+					"name": "Create EOR Issue",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cc_components\": \"CC_Comp_Issue\",\n    \"evaluation_reference\": \"Eval_Ref_Issue\",\n    \"issue_description\": \"Description of the issue found.\",\n    \"eor_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/eor-issue",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-issue"
+							]
+						},
+						"description": "Create a new EOR Issue. Ensure 'eor_id' exists."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All EOR Issues",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor-issue",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-issue"
+							]
+						},
+						"description": "Get a list of all EOR Issues."
+					},
+					"response": []
+				},
+				{
+					"name": "Get EOR Issue By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor-issue/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-issue",
+								"1"
+							]
+						},
+						"description": "Get a specific EOR Issue by its ID. Replace '1' with an actual EOR Issue ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Update EOR Issue",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"issue_description\": \"Updated description of the issue.\",\n    \"eor_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/eor-issue/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-issue",
+								"1"
+							]
+						},
+						"description": "Update an EOR Issue's details. Replace '1' with an actual EOR Issue ID. Uses POST as per eor_issue_routes.js."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete EOR Issue",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor-issue/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-issue",
+								"1"
+							]
+						},
+						"description": "Delete an EOR Issue by its ID. Replace '1' with an actual EOR Issue ID."
+					},
+					"response": []
+				}
+			],
+			"description": "Operations related to EOR Issues. Assuming base path '/api/eor-issue'."
+		},
+		{
+			"name": "Reviewers",
+			"item": [
+				{
+					"name": "Create Reviewer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"position\": \"Lead Reviewer\",\n    \"userId\": 1 \n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviewers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviewers"
+							]
+						},
+						"description": "Create a new Reviewer. Ensure 'userId' exists and corresponds to a user."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Reviewers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reviewers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviewers"
+							]
+						},
+						"description": "Get a list of all Reviewers."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reviewer By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reviewers/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviewers",
+								"1"
+							]
+						},
+						"description": "Get a specific Reviewer by their ID. Replace '1' with an actual Reviewer ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Reviewer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Jane Doe\",\n    \"position\": \"Senior Reviewer\",\n    \"userId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviewers/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviewers",
+								"1"
+							]
+						},
+						"description": "Update a Reviewer's details. Replace '1' with an actual Reviewer ID. Uses POST as per reviewer_routes.js."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Reviewer",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reviewers/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviewers",
+								"1"
+							]
+						},
+						"description": "Delete a Reviewer by their ID. Replace '1' with an actual Reviewer ID."
+					},
+					"response": []
+				}
+			],
+			"description": "Operations related to Reviewers."
+		},
+		{
+			"name": "EOR Assignment",
+			"item": [
+				{
+					"name": "Create EOR Assignment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reviewer_id\": 1,\n    \"eor_issue_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/eor-assignments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-assignments"
+							]
+						},
+						"description": "Create a new EOR Assignment. Ensure 'reviewer_id' and 'eor_issue_id' exist."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All EOR Assignments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor-assignments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-assignments"
+							]
+						},
+						"description": "Get a list of all EOR Assignments."
+					},
+					"response": []
+				},
+				{
+					"name": "Get EOR Assignment By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor-assignments/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-assignments",
+								"1"
+							]
+						},
+						"description": "Get a specific EOR Assignment by its ID. Replace '1' with an actual EOR Assignment ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Update EOR Assignment",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reviewer_id\": 2,\n    \"eor_issue_id\": 2\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/eor-assignments/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-assignments",
+								"1"
+							]
+						},
+						"description": "Update an EOR Assignment. Replace '1' with an actual EOR Assignment ID. Ensure new 'reviewer_id' and 'eor_issue_id' exist."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete EOR Assignment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor-assignments/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-assignments",
+								"1"
+							]
+						},
+						"description": "Delete an EOR Assignment by its ID. Replace '1' with an actual EOR Assignment ID."
+					},
+					"response": []
+				}
+			],
+			"description": "Operations related to EOR Assignments. Assuming base path '/api/eor-assignments'."
+		},
+        {
+			"name": "EOR Review",
+			"item": [
+				{
+					"name": "Create EOR Review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"eor_issue_id\": 1,\n    \"review_date\": \"2024-05-28T10:00:00.000Z\",\n    \"auditor_review\": \"Initial review comments.\",\n    \"status\": \"Pending\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/eor-reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-reviews"
+							]
+						},
+						"description": "Create a new EOR Review. Requires user to be assigned to the EOR Issue. 'eor_issue_id' must exist."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All EOR Reviews",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor-reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-reviews"
+							]
+						},
+						"description": "Get a list of all EOR Reviews."
+					},
+					"response": []
+				},
+				{
+					"name": "Get EOR Review By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor-reviews/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-reviews",
+								"1"
+							]
+						},
+						"description": "Get a specific EOR Review by its ID. Replace '1' with an actual EOR Review ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Update EOR Review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"review_date\": \"2024-05-29T10:00:00.000Z\",\n    \"auditor_review\": \"Updated review comments.\",\n    \"status\": \"Completed\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/eor-reviews/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-reviews",
+								"1"
+							]
+						},
+						"description": "Update an EOR Review. Replace '1' with an actual EOR Review ID. Requires user to be assigned. Uses POST as per eor_review_routes.js."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete EOR Review",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor-reviews/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-reviews",
+								"1"
+							]
+						},
+						"description": "Delete an EOR Review by its ID. Replace '1' with an actual EOR Review ID. Requires user to be assigned."
+					},
+					"response": []
+				}
+			],
+			"description": "Operations related to EOR Reviews. Assuming base path '/api/eor-reviews'."
+		},
+        {
+			"name": "EOR Review Summary",
+			"item": [
+				{
+					"name": "Create EOR Review Summary",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"eor_id\": 1,\n    \"summary\": \"This is the summary of all reviews for the EOR.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/eor-review-summaries",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-review-summaries"
+							]
+						},
+						"description": "Create a new EOR Review Summary. Requires user to be assigned to an EOR Issue within this EOR. 'eor_id' must exist."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All EOR Review Summaries",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor-review-summaries",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-review-summaries"
+							]
+						},
+						"description": "Get a list of all EOR Review Summaries."
+					},
+					"response": []
+				},
+				{
+					"name": "Get EOR Review Summary By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor-review-summaries/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-review-summaries",
+								"1"
+							]
+						},
+						"description": "Get a specific EOR Review Summary by its ID. Replace '1' with an actual ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Update EOR Review Summary",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"summary\": \"Updated summary for the EOR reviews.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/eor-review-summaries/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-review-summaries",
+								"1"
+							]
+						},
+						"description": "Update an EOR Review Summary. Replace '1' with an actual ID. Requires user to be assigned. Uses POST as per routes."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete EOR Review Summary",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/eor-review-summaries/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"eor-review-summaries",
+								"1"
+							]
+						},
+						"description": "Delete an EOR Review Summary by its ID. Replace '1' with an actual ID. Requires user to be assigned."
+					},
+					"response": []
+				}
+			],
+			"description": "Operations related to EOR Review Summaries. Assuming base path '/api/eor-review-summaries'."
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		}
+	]
+}
